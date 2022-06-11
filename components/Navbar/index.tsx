@@ -139,7 +139,6 @@ const DesktopNav = () => {
                                 {navItem.label}
                             </Link>
                         </PopoverTrigger>
-
                         {navItem.children && (
                             <PopoverContent
                                 border={0}
@@ -292,14 +291,14 @@ interface NavItem {
 const NAV_ITEMS: Array<NavItem> = [
     {
         label: "Home",
-        href: "#",
+        href: "/",
     },
     {
         label: "Events",
-        href: "#",
+        href: "/events",
     },
     {
         label: "Create",
-        href: "#",
+        href: "/create",
     },
 ];
