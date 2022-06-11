@@ -22,10 +22,19 @@ import {
     ChevronDownIcon,
     ChevronRightIcon,
 } from "@chakra-ui/icons";
+import { useAppDispatch, useAppSelector } from "../../redux/hook";
+import React from "react";
+import { connectWallet } from "../../redux/slices/wallet";
 
 export default function Navbar() {
     const { isOpen, onToggle } = useDisclosure();
-
+    const { walletAddress, loading } = useAppSelector(
+        (state) => state.walletAddress
+    );
+    const dispatch = useAppDispatch();
+    React.useEffect(() => {
+        dispatch(connectWallet(5));
+    }, []);
     return (
         <Box w="7xl" mx={"auto"} py="3">
             <Flex
