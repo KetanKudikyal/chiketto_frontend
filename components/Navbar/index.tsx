@@ -62,7 +62,7 @@ export default function Navbar() {
     }
 
     return (
-        <Box w="7xl" mx={"auto"} py="3">
+        <Box mx={"auto"} py="3">
             <Flex
                 bg={useColorModeValue("white", "gray.800")}
                 color={useColorModeValue("gray.600", "white")}
