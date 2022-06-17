@@ -24,7 +24,11 @@ import {
 } from "@chakra-ui/icons";
 import { useAppDispatch, useAppSelector } from "../../redux/hook";
 import React from "react";
-import { connectWallet } from "../../redux/slices/wallet";
+import { connectWallet, setWalletAddress } from "../../redux/slices/wallet";
+import { TezosToolkit } from "@taquito/taquito";
+import {NetworkType} from '@airgap/beacon-types'
+import { NETWORK, RPC_NODE } from "../../globals";
+import { wallet } from "../../common/wallet";
 
 export default function Navbar() {
     const { isOpen, onToggle } = useDisclosure();
@@ -33,8 +37,30 @@ export default function Navbar() {
     );
     const dispatch = useAppDispatch();
     React.useEffect(() => {
-        dispatch(connectWallet(5));
+        async function connect(): Promise<void> {
+            let account = await wallet.client.getActiveAccount();
+        if (account) {
+            const pkh = await wallet.getPKH();
+            dispatch(setWalletAddress({walletAddress: pkh, loading: 'idle'}));
+        }
+    }
+    connect()
     }, []);
+
+    const handleConnectWallet = async () => {
+        // const tezos = new TezosToolkit(RPC_NODE);
+        console.log("Connecting")
+        // tezos.setWalletProvider(beaconWallet);
+
+        let account = await wallet.client.getActiveAccount();
+        console.log(account)
+        if (!account) {
+            await wallet.requestPermissions({network: {type: NETWORK as NetworkType}})
+            const pkh = await wallet.getPKH();
+            dispatch(setWalletAddress({walletAddress: pkh, loading: 'idle'}));
+        }
+    }
+
     return (
         <Box w="7xl" mx={"auto"} py="3">
             <Flex
@@ -101,8 +127,13 @@ export default function Navbar() {
                         _hover={{
                             bg: "pink.300",
                         }}
+                        onClick={handleConnectWallet}
                     >
-                        Connect Wallet
+                        {
+                        walletAddress ?
+                        walletAddress.slice(0, 4) + '...' + walletAddress.slice(walletAddress.length-4, walletAddress.length):
+                        "Connect Wallet"
+}
                     </Button>
                 </Stack>
             </Flex>

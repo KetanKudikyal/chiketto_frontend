@@ -1,9 +1,14 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { BeaconWallet} from '@taquito/beacon-wallet';
+import {NetworkType} from '@airgap/beacon-types';
+
 
 type WalletProps = {
      walletAddress: string;
      loading: 'idle' | 'pending'
 }
+
+
 export const initialState = {
      walletAddress: "Whatsup nigga",
      loading: 'idle'

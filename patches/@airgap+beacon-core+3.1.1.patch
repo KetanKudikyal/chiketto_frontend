@@ -1,0 +1,20 @@
+diff --git a/node_modules/@airgap/beacon-core/dist/cjs/storage/LocalStorage.js b/node_modules/@airgap/beacon-core/dist/cjs/storage/LocalStorage.js
+index 5270f20..4416a91 100644
+--- a/node_modules/@airgap/beacon-core/dist/cjs/storage/LocalStorage.js
++++ b/node_modules/@airgap/beacon-core/dist/cjs/storage/LocalStorage.js
+@@ -43,6 +43,15 @@ var beacon_types_1 = require("@airgap/beacon-types");
+  *
+  * A storage that can be used in the browser
+  */
++
++let localStorage = typeof window !== "undefined" ? window.localStorage : {
++    getItem(key) {
++        return null
++    },
++    setItem(key, value) {
++        return null
++    }
++}
+ var LocalStorage = /** @class */ (function () {
+     function LocalStorage(prefix) {
+         this.prefix = prefix;
