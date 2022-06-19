@@ -26,7 +26,7 @@ import { useAppDispatch, useAppSelector } from "../../redux/hook";
 import React from "react";
 import { connectWallet, setWalletAddress } from "../../redux/slices/wallet";
 import { TezosToolkit } from "@taquito/taquito";
-import {NetworkType} from '@airgap/beacon-types'
+import { NetworkType } from "@airgap/beacon-types";
 import { NETWORK, RPC_NODE } from "../../globals";
 import { wallet } from "../../common/wallet";
 
@@ -39,27 +39,31 @@ export default function Navbar() {
     React.useEffect(() => {
         async function connect(): Promise<void> {
             let account = await wallet.client.getActiveAccount();
-        if (account) {
-            const pkh = await wallet.getPKH();
-            dispatch(setWalletAddress({walletAddress: pkh, loading: 'idle'}));
+            if (account) {
+                const pkh = await wallet.getPKH();
+                dispatch(
+                    setWalletAddress({ walletAddress: pkh, loading: "idle" })
+                );
+            }
         }
-    }
-    connect()
+        connect();
     }, []);
 
     const handleConnectWallet = async () => {
         // const tezos = new TezosToolkit(RPC_NODE);
-        console.log("Connecting")
+        console.log("Connecting");
         // tezos.setWalletProvider(beaconWallet);
 
         let account = await wallet.client.getActiveAccount();
-        console.log(account)
+        console.log(account);
         if (!account) {
-            await wallet.requestPermissions({network: {type: NETWORK as NetworkType}})
+            await wallet.requestPermissions({
+                network: { type: NETWORK as NetworkType },
+            });
             const pkh = await wallet.getPKH();
-            dispatch(setWalletAddress({walletAddress: pkh, loading: 'idle'}));
+            dispatch(setWalletAddress({ walletAddress: pkh, loading: "idle" }));
         }
-    }
+    };
 
     return (
         <Box mx={"auto"} py="3">
@@ -102,9 +106,11 @@ export default function Navbar() {
                             md: "left",
                         })}
                         fontFamily={"heading"}
+                        fontWeight={"bold"}
+                        textTransform={"uppercase"}
                         color={useColorModeValue("gray.800", "white")}
                     >
-                        Logo
+                        Chiketto
                     </Text>
 
                     <Flex display={{ base: "none", md: "flex" }} ml={10}>
@@ -129,11 +135,14 @@ export default function Navbar() {
                         }}
                         onClick={handleConnectWallet}
                     >
-                        {
-                        walletAddress ?
-                        walletAddress.slice(0, 4) + '...' + walletAddress.slice(walletAddress.length-4, walletAddress.length):
-                        "Connect Wallet"
-}
+                        {walletAddress
+                            ? walletAddress.slice(0, 4) +
+                              "..." +
+                              walletAddress.slice(
+                                  walletAddress.length - 4,
+                                  walletAddress.length
+                              )
+                            : "Connect Wallet"}
                     </Button>
                 </Stack>
             </Flex>

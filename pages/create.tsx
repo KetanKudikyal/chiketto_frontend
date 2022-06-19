@@ -115,7 +115,7 @@ const Create = () => {
 
         const info = await createEventContract(name, desc, ipfsUri);
         toast({
-            title: info.status ? "Success" : "Error",
+            title: info.status ? "Transaction Confirmed" : "Error",
             description: info.msg,
             status: info.status ? "success" : "error",
             duration: 9000,
@@ -147,6 +147,7 @@ const Create = () => {
                             placeholder="Here is a sample placeholder"
                             mt={"0"}
                             size="sm"
+                            isRequired={true}
                         />
                     </Stack>
                     <Stack>
@@ -157,6 +158,7 @@ const Create = () => {
                             placeholder="Here is a sample placeholder"
                             mt={"0"}
                             size="sm"
+                            isRequired={true}
                         ></Textarea>
                     </Stack>
                     <Stack>
@@ -172,6 +174,7 @@ const Create = () => {
                             placeholder="Here is a sample placeholder"
                             mt={"0"}
                             size="sm"
+                            isRequired={true}
                         />
                     </Stack>
                     <Stack alignItems={"start"}>
