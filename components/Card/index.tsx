@@ -12,13 +12,14 @@ import {
 } from "@chakra-ui/react";
 import Link from "next/link";
 import { Event } from "../../pages/events";
+import Card from "./card";
 
-export default function Card({ event }: { event: Event }) {
+export default function CardA({ event }: { event: Event }) {
     return (
         <Center py={6} w="full" m={6}>
             <Box
+                bg="#04293A"
                 w={"full"}
-                bg={useColorModeValue("white", "gray.800")}
                 boxShadow={"2xl"}
                 rounded={"md"}
                 overflow={"hidden"}
@@ -43,7 +44,6 @@ export default function Card({ event }: { event: Event }) {
                         </Heading>
                         <Text color={"gray.500"}>description</Text>
                     </Stack>
-
                     <Stack direction={"row"} justify={"center"} spacing={6}>
                         <Stack spacing={0} align={"center"}>
                             <Text fontWeight={600}>{event.ticketsLeft}</Text>
@@ -62,7 +62,7 @@ export default function Card({ event }: { event: Event }) {
                         <Button
                             w={"full"}
                             mt={8}
-                            bg={useColorModeValue("#151f21", "gray.900")}
+                            variant="outline"
                             color={"white"}
                             rounded={"md"}
                             _hover={{

@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { BeaconWallet} from '@taquito/beacon-wallet';
-import {NetworkType} from '@airgap/beacon-types';
+import { wallet } from '../../../common/wallet';
+import { NETWORK } from '../../../globals';
+import { NetworkType } from "@airgap/beacon-types";
 
 
 type WalletProps = {
@@ -10,20 +11,43 @@ type WalletProps = {
 
 
 export const initialState = {
-     walletAddress: "Whatsup nigga",
+     walletAddress: "",
      loading: 'idle'
 };
 
 export const connectWallet = createAsyncThunk(
      'connectWallet',
      // if you type your function argument here
-     async (userId: number) => {
-          const request = await fetch(`https://reqres.in/api/users/${userId}`)
-          const response = await request.json()
-          const walletAddress = response.data.first_name
-          return walletAddress
+     async () => {
+
+          let account = await wallet.client.getActiveAccount();
+          await wallet.disconnect()
+          debugger
+          if (!account) {
+               await wallet.requestPermissions({
+                    network: { type: NETWORK as NetworkType },
+               });
+               account = await wallet.client.getActiveAccount();
+          }
+          debugger
+          return account.address
      }
 )
+
+export const fetchWallet = createAsyncThunk(
+     'fetchWallet',
+     // if you type your function argument here
+     async () => {
+          let account = await wallet.client.getActiveAccount();
+          if (account) {
+               return account.address
+          }
+     }
+)
+
+export const disconnectWallet = createAsyncThunk('disconnectWallet', async () => {
+     await wallet.disconnect();
+})
 
 
 export const walletAddressSlicer = createSlice({
@@ -36,21 +60,67 @@ export const walletAddressSlicer = createSlice({
      },
      extraReducers: (builder) => {
           builder.addCase(connectWallet.pending, (state, action) => {
+               console.log(state.loading)
                if (state.loading === 'idle') {
                     state.loading = 'pending'
                     state.walletAddress = ""
                }
           })
-               .addCase(connectWallet.fulfilled, (state, action: PayloadAction<WalletProps>) => {
-                    console.log(action)
+               .addCase(connectWallet.fulfilled, (state, action) => {
+                    console.log("hggg", action.payload)
                     if (
                          state.loading === 'pending'
                     ) {
                          state.loading = 'idle'
-                         state.walletAddress = action.payload.walletAddress
+                         state.walletAddress = action.payload
                     }
                })
                .addCase(connectWallet.rejected, (state, action) => {
+                    if (
+                         state.loading === 'pending'
+                    ) {
+                         state.loading = 'idle'
+                         state.walletAddress = ""
+                    }
+               })
+          builder.addCase(disconnectWallet.pending, (state, action) => {
+               if (state.loading === 'idle') {
+                    state.loading = 'pending'
+                    state.walletAddress = state.walletAddress
+               }
+          })
+               .addCase(disconnectWallet.fulfilled, (state, action) => {
+                    if (
+                         state.loading === 'pending'
+                    ) {
+                         state.loading = 'idle'
+                         state.walletAddress = ""
+                    }
+               })
+               .addCase(disconnectWallet.rejected, (state, action) => {
+                    if (
+                         state.loading === 'pending'
+                    ) {
+                         state.loading = 'idle'
+                         state.walletAddress = state.walletAddress
+                    }
+               })
+          builder.addCase(fetchWallet.pending, (state, action) => {
+               console.log(state.loading)
+               if (state.loading === 'idle') {
+                    state.loading = 'pending'
+                    state.walletAddress = ""
+               }
+          })
+               .addCase(fetchWallet.fulfilled, (state, action) => {
+                    if (
+                         state.loading === 'pending'
+                    ) {
+                         state.loading = 'idle'
+                         state.walletAddress = action.payload
+                    }
+               })
+               .addCase(fetchWallet.rejected, (state, action) => {
                     if (
                          state.loading === 'pending'
                     ) {
