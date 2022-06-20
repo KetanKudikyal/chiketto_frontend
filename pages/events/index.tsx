@@ -5,54 +5,10 @@ import Navbar from "../../components/Navbar";
 import { FACTORY_CONTRACT, TZKT_ENDPOINT } from "../../globals";
 import axios from "axios";
 import { bytes2Char } from "@taquito/utils";
-
-export type Event = {
-    name: string;
-    description: string;
-    thumbnailUri: string;
-    address: string;
-    admin: string;
-};
-
-export type GetOperationByContractOptions = {
-    contract: string;
-    entrypoint: string;
-    firstlevel: number;
-    lastlevel: number;
-};
-export type CreateEventOperationType = {
-    hash: string;
-    sender: string;
-    value: string;
-};
+import { fetchEvents, fetchIpfsMetadata } from "../../common/tzkt";
+import { Event } from "../../common/types";
 
 export const events: Event[] = [];
-
-const fetchIpfsMetadata = async (hash: string) => {
-    const { data } = await axios.get(
-        `https://gateway.pinata.cloud/ipfs/${hash}`
-    );
-    return data;
-};
-
-const fetchEvents = async (address: string) => {
-    const { data } = await axios.get(
-        `https://api.ithacanet.tzkt.io/v1/contracts/${address}/storage`
-    );
-    let events: Event[] = [];
-    for (let eventAddress of Object.keys(data.metadatas)) {
-        const hash = bytes2Char(data.metadatas[eventAddress]);
-        const metadata = await fetchIpfsMetadata(hash);
-        events.push({
-            address: eventAddress,
-            description: metadata.description,
-            name: metadata.name,
-            thumbnailUri: metadata.thumbnailUri,
-            admin: metadata.admin,
-        });
-    }
-    return events;
-};
 
 const Events = () => {
     const [events, setEvents] = useState<Event[]>([]);
