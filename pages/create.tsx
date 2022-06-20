@@ -32,7 +32,9 @@ const Create = () => {
     const [ticketPrice, setTicketPrice] = useState<number>(1);
     const [ticketQuantity, setTicketQuantity] = useState<number>(1);
     const [myEvents, setMyEvents] = useState<Event[]>([]);
+    const [ticketEvent, setTicketEvent] = useState<string>("");
     const toast = useToast();
+    const [isEventBtnLoading, setIsEventBtnLoading] = useState<boolean>(false);
 
     const createEventContract = async (
         name: string,
@@ -83,7 +85,6 @@ const Create = () => {
         let ipfsUri: string = "";
         setIsBtnLoading(true);
         e.preventDefault();
-        const metadata = {};
         console.log(img);
         if (img) {
             const res = await uploadToIPFS(img);
@@ -123,7 +124,119 @@ const Create = () => {
     const createTicket = async () => {};
     const handleCreateTicketForm = async (
         e: React.FormEvent<HTMLFormElement>
-    ) => {};
+    ) => {
+        let imageIPFSUri: string = "";
+        let imageType: string = "";
+        let imageDimension: string = "1200x700";
+        const pkh = await wallet.getPKH();
+        setIsEventBtnLoading(true);
+        e.preventDefault();
+
+        if (!ticketEvent) {
+            toast({
+                title: "Error",
+                description: "Please select an event",
+                status: "error",
+                duration: 9000,
+                isClosable: true,
+            });
+            return;
+        }
+
+        // Upload the image to IPFS first.
+        if (ticketImg) {
+            const res = await uploadToIPFS(ticketImg);
+            let u = URL.createObjectURL(ticketImg);
+            let img = new Image();
+            img.src = u;
+            imageIPFSUri = "ipfs://" + res.msg;
+            imageType = ticketImg.type;
+            imageDimension = `${img.width}x${img.height}`;
+
+            toast({
+                title: res.status ? "Image uploded" : "Error",
+                description: res.msg,
+                status: res.status ? "success" : "error",
+                duration: 9000,
+                isClosable: true,
+            });
+            if (!res.status) return;
+        } else {
+            toast({
+                title: "No file",
+                description: "No file is selected, please select a valid file.",
+                status: "error",
+                duration: 9000,
+                isClosable: true,
+            });
+            return;
+        }
+
+        // Create the metadata and upload this metadata to IPFS.
+        const metadata = {
+            id: 0,
+            name: ticketName,
+            symbol: "CHIKETTO",
+            description: ticketDesc,
+            decimals: 0,
+            isBooleanAmount: true,
+            shouldPreferSymbol: false,
+            creators: [pkh],
+            artifactUri: imageIPFSUri,
+            displayUri: imageIPFSUri,
+            thumbnailUri: imageIPFSUri,
+            attributes: [{ name: "price", value: ticketPrice }],
+            formats: [
+                {
+                    uri: imageIPFSUri,
+                    mimeType: imageType,
+                    dimensions: {
+                        value: imageDimension,
+                        unit: "px",
+                    },
+                },
+            ],
+            rights: "(c) 2022 Chiketto | All rights reserved.",
+        };
+        const metadataRes = await uploadJSONToIPFS(metadata);
+        const metadataUri = "ipfs://" + metadataRes.msg;
+
+        toast({
+            title: metadataRes.status ? "Metadata uploded" : "Error",
+            description: metadataRes.msg,
+            status: metadataRes.status ? "success" : "error",
+            duration: 9000,
+            isClosable: true,
+        });
+        if (!metadataRes.status) return;
+
+        // Call the createTicket transaction
+        const contract = await tezos.wallet.at(ticketEvent);
+        const op = await contract.methods
+            .createTicket(
+                ticketQuantity,
+                ticketPrice * 10 ** 6,
+                char2Bytes(metadataUri)
+            )
+            .send();
+
+        toast({
+            title: "Transaction Sent.",
+            description: `Transaction to create Event contract with hash ${op.opHash} is sent.`,
+            status: "success",
+            duration: 9000,
+            isClosable: true,
+        });
+        await op.confirmation();
+        toast({
+            title: "Transaction Confirmed",
+            description: "Ticket created successfully.",
+            status: "success",
+            duration: 9000,
+            isClosable: true,
+        });
+        setIsEventBtnLoading(false);
+    };
 
     useEffect(() => {
         async function doSomething() {
@@ -137,6 +250,7 @@ const Create = () => {
     return (
         <div>
             <Navbar />
+            {/* Event Form */}
             <form onSubmit={handleCreateForm}>
                 <Box
                     maxW={"3xl"}
@@ -215,8 +329,13 @@ const Create = () => {
                     <Heading>Create Ticket</Heading>
                     <Stack>
                         <Text>Event: </Text>
-                        <Select placeholder="Select Event">
+                        <Select
+                            placeholder="Select Event"
+                            value={ticketEvent}
+                            onChange={(e) => setTicketEvent(e.target.value)}
+                        >
                             {myEvents.map((event, index) => (
+                                // make the first one default
                                 <option key={index} value={event.address}>
                                     {event.name}
                                 </option>
@@ -293,7 +412,7 @@ const Create = () => {
                         <Button
                             type="submit"
                             colorScheme="blue"
-                            isLoading={isBtnLoading}
+                            isLoading={isEventBtnLoading}
                         >
                             Create Ticket
                         </Button>
