@@ -7,7 +7,6 @@ import {
     Stack,
     Collapse,
     Icon,
-    Link,
     Popover,
     PopoverTrigger,
     PopoverContent,
@@ -15,6 +14,7 @@ import {
     useBreakpointValue,
     useDisclosure,
     Container,
+    Link,
 } from "@chakra-ui/react";
 import {
     HamburgerIcon,
@@ -24,11 +24,16 @@ import {
 } from "@chakra-ui/icons";
 import { useAppDispatch, useAppSelector } from "../../redux/hook";
 import React from "react";
-import { connectWallet, setWalletAddress } from "../../redux/slices/wallet";
+import {
+    connectWallet,
+    fetchWallet,
+    setWalletAddress,
+} from "../../redux/slices/wallet";
 import { TezosToolkit } from "@taquito/taquito";
 import { NetworkType } from "@airgap/beacon-types";
 import { NETWORK, RPC_NODE } from "../../globals";
 import { wallet } from "../../common/wallet";
+import WalletModal from "../Modal/WalletModal";
 
 export default function Navbar() {
     const { isOpen, onToggle } = useDisclosure();
@@ -37,45 +42,23 @@ export default function Navbar() {
     );
     const dispatch = useAppDispatch();
     React.useEffect(() => {
-        async function connect(): Promise<void> {
-            let account = await wallet.client.getActiveAccount();
-            if (account) {
-                const pkh = await wallet.getPKH();
-                dispatch(
-                    setWalletAddress({ walletAddress: pkh, loading: "idle" })
-                );
-            }
-        }
-        connect();
+        dispatch(fetchWallet());
     }, []);
-
+    console.log(loading);
     const handleConnectWallet = async () => {
-        // const tezos = new TezosToolkit(RPC_NODE);
-        console.log("Connecting");
-        // tezos.setWalletProvider(beaconWallet);
-
-        let account = await wallet.client.getActiveAccount();
-        console.log(account);
-        if (!account) {
-            await wallet.requestPermissions({
-                network: { type: NETWORK as NetworkType },
-            });
-            const pkh = await wallet.getPKH();
-            dispatch(setWalletAddress({ walletAddress: pkh, loading: "idle" }));
-        }
+        const dd = dispatch(connectWallet());
     };
+    const { isOpen: isOpenWallet, onOpen, onClose } = useDisclosure();
 
     return (
-        <Box mx={"auto"} py="3">
+        <Box mx={"auto"} maxW="8xl">
+            <WalletModal isOpen={isOpenWallet} onClose={onClose} />
             <Flex
-                bg={useColorModeValue("white", "gray.800")}
-                color={useColorModeValue("gray.600", "white")}
+                bg={"primary.main"}
                 minH={"60px"}
+                color="white"
                 py={{ base: 2 }}
                 px={{ base: 4 }}
-                borderBottom={1}
-                borderStyle={"solid"}
-                borderColor={useColorModeValue("gray.200", "gray.900")}
                 align={"center"}
             >
                 <Flex
@@ -108,7 +91,7 @@ export default function Navbar() {
                         fontFamily={"heading"}
                         fontWeight={"bold"}
                         textTransform={"uppercase"}
-                        color={useColorModeValue("gray.800", "white")}
+                        color={"white"}
                     >
                         Chiketto
                     </Text>
@@ -124,26 +107,36 @@ export default function Navbar() {
                     direction={"row"}
                     spacing={6}
                 >
-                    <Button
-                        display={{ base: "none", md: "inline-flex" }}
-                        fontSize={"sm"}
-                        fontWeight={600}
-                        color={"white"}
-                        bg={"pink.400"}
-                        _hover={{
-                            bg: "pink.300",
-                        }}
-                        onClick={handleConnectWallet}
-                    >
-                        {walletAddress
-                            ? walletAddress.slice(0, 4) +
-                              "..." +
-                              walletAddress.slice(
-                                  walletAddress.length - 4,
-                                  walletAddress.length
-                              )
-                            : "Connect Wallet"}
-                    </Button>
+                    {walletAddress ? (
+                        <Button
+                            display={{ base: "none", md: "inline-flex" }}
+                            fontSize={"sm"}
+                            fontWeight={600}
+                            my={3}
+                            variant="outline"
+                            color={"white"}
+                            onClick={onOpen}
+                        >
+                            {walletAddress.slice(0, 4) +
+                                "..." +
+                                walletAddress.slice(
+                                    walletAddress.length - 4,
+                                    walletAddress.length
+                                )}
+                        </Button>
+                    ) : (
+                        <Button
+                            display={{ base: "none", md: "inline-flex" }}
+                            fontSize={"sm"}
+                            fontWeight={600}
+                            my={3}
+                            variant="solid"
+                            color={"white"}
+                            onClick={handleConnectWallet}
+                        >
+                            Connect Wallet
+                        </Button>
+                    )}
                 </Stack>
             </Flex>
 
@@ -170,10 +163,9 @@ const DesktopNav = () => {
                                 href={navItem.href ?? "#"}
                                 fontSize={"sm"}
                                 fontWeight={500}
-                                color={linkColor}
                                 _hover={{
                                     textDecoration: "none",
-                                    color: linkHoverColor,
+                                    color: "secondary.main",
                                 }}
                             >
                                 {navItem.label}
@@ -207,14 +199,7 @@ const DesktopNav = () => {
 
 const DesktopSubNav = ({ label, href, subLabel }: NavItem) => {
     return (
-        <Link
-            href={href}
-            role={"group"}
-            display={"block"}
-            p={2}
-            rounded={"md"}
-            _hover={{ bg: useColorModeValue("pink.50", "gray.900") }}
-        >
+        <Link href={href} p={2}>
             <Stack direction={"row"} align={"center"}>
                 <Box>
                     <Text
@@ -279,12 +264,7 @@ const MobileNavItem = ({ label, children, href }: NavItem) => {
                     textDecoration: "none",
                 }}
             >
-                <Text
-                    fontWeight={600}
-                    color={useColorModeValue("gray.600", "gray.200")}
-                >
-                    {label}
-                </Text>
+                <Text fontWeight={600}>{label}</Text>
                 {children && (
                     <Icon
                         as={ChevronDownIcon}

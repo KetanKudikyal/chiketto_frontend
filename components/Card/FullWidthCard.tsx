@@ -16,9 +16,9 @@ export default function FullWidthCard() {
         <Center py={6} w={"full"}>
             <Box
                 w={"full"}
-                bg={useColorModeValue("white", "gray.800")}
                 boxShadow={"2xl"}
                 rounded={"md"}
+                bg="#04293A"
                 overflow={"hidden"}
             >
                 <Image
@@ -42,7 +42,6 @@ export default function FullWidthCard() {
                         </Heading>
                         <Text color={"gray.500"}>description</Text>
                     </Stack>
-
                     <Stack direction={"row"} justify={"center"} spacing={6}>
                         <Stack spacing={0} align={"center"}>
                             <Text fontWeight={600}>23k</Text>
