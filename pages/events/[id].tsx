@@ -8,7 +8,8 @@ const EventPage = () => {
         <div>
             <Navbar />
             <Box
-                w={"7xl"}
+                // w={"7xl"}
+                maxW={"3xl"}
                 mt={10}
                 mx="auto"
                 display={"flex"}

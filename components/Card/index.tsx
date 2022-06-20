@@ -26,9 +26,7 @@ export default function Card({ event }: { event: Event }) {
                 <Image
                     h={"220px"}
                     w={"full"}
-                    src={
-                        "https://images.unsplash.com/photo-1612865547334-09cb8cb455da?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80"
-                    }
+                    src={`https://gateway.pinata.cloud/ipfs/${event.thumbnailUri}`}
                     objectFit={"cover"}
                     alt="Image"
                 />
@@ -41,24 +39,24 @@ export default function Card({ event }: { event: Event }) {
                         >
                             {event.name}
                         </Heading>
-                        <Text color={"gray.500"}>description</Text>
+                        <Text color={"gray.500"}>{event.description}</Text>
                     </Stack>
 
                     <Stack direction={"row"} justify={"center"} spacing={6}>
                         <Stack spacing={0} align={"center"}>
-                            <Text fontWeight={600}>{event.ticketsLeft}</Text>
+                            <Text fontWeight={600}>{event.name}</Text>
                             <Text fontSize={"sm"} color={"gray.500"}>
                                 Tickets left
                             </Text>
                         </Stack>
                         <Stack spacing={0} align={"center"}>
-                            <Text fontWeight={600}>{event.price}</Text>
+                            <Text fontWeight={600}>{event.name}</Text>
                             <Text fontSize={"sm"} color={"gray.500"}>
                                 Price in USD
                             </Text>
                         </Stack>
                     </Stack>
-                    <Link href={`/events/${event.id}`}>
+                    <Link href={`/events/${event.address}`}>
                         <Button
                             w={"full"}
                             mt={8}

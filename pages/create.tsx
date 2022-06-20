@@ -13,7 +13,7 @@ import {
 import { char2Bytes } from "@taquito/utils";
 import axios from "axios";
 import React, { useState } from "react";
-import { tezos } from "../common/wallet";
+import { tezos, wallet } from "../common/wallet";
 import Navbar from "../components/Navbar";
 import { FACTORY_CONTRACT, FEE } from "../globals";
 
@@ -51,23 +51,57 @@ const Create = () => {
         }
     };
 
+    const uploadJSONToIPFS = async (json: object) => {
+        let data = JSON.stringify(json);
+        const res = await axios.post(
+            "https://api.pinata.cloud/pinning/pinJSONToIPFS",
+            data,
+            {
+                headers: {
+                    pinata_api_key:
+                        process.env.NEXT_PUBLIC_PINATA_API_KEY || "",
+                    pinata_secret_api_key:
+                        process.env.NEXT_PUBLIC_PINATA_SECRET_KEY || "",
+                    ["Content-Type"]: "application/json",
+                },
+            }
+        );
+        if (res.status === 200) {
+            return { status: true, msg: res.data.IpfsHash };
+        } else {
+            return { status: false, msg: "Error with Pinata API." };
+        }
+    };
+
     const createEventContract = async (
         name: string,
         desc: string,
         imgUri: string
     ) => {
         try {
+            // Upload the metadata to IPFS first.
+            const admin = await wallet.getPKH();
+            const res = await uploadJSONToIPFS({
+                name: name,
+                description: desc,
+                thumbnailUri: imgUri,
+                admin: admin,
+            });
+            toast({
+                title: res.status ? "Metadata Uploaded" : "Error",
+                description: res.msg,
+                status: res.status ? "success" : "error",
+                duration: 9000,
+                isClosable: true,
+            });
+            if (!res.status)
+                return {
+                    status: false,
+                    msg: "Error while uploading the metadata to IPFS",
+                };
             const contract = await tezos.wallet.at(FACTORY_CONTRACT);
             const op = await contract.methods
-                .default(
-                    char2Bytes(
-                        JSON.stringify({
-                            name: name,
-                            description: desc,
-                            thumbnailUri: imgUri,
-                        })
-                    )
-                )
+                .default(char2Bytes(res.msg))
                 .send({ amount: FEE, mutez: true });
             toast({
                 title: "Transaction Sent.",
@@ -114,6 +148,7 @@ const Create = () => {
         }
 
         const info = await createEventContract(name, desc, ipfsUri);
+
         toast({
             title: info.status ? "Transaction Confirmed" : "Error",
             description: info.msg,
