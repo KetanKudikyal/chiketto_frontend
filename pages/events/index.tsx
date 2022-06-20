@@ -11,6 +11,7 @@ export type Event = {
     description: string;
     thumbnailUri: string;
     address: string;
+    admin: string;
 };
 
 export type GetOperationByContractOptions = {
@@ -25,64 +26,7 @@ export type CreateEventOperationType = {
     value: string;
 };
 
-export const events: Event[] = [
-    // {
-    //     id: 1,
-    //     name: "First",
-    //     price: 100,
-    //     ticketsLeft: 500,
-    // },
-    // {
-    //     id: 1,
-    //     name: "First",
-    //     price: 100,
-    //     ticketsLeft: 500,
-    // },
-    // {
-    //     id: 1,
-    //     name: "First",
-    //     price: 100,
-    //     ticketsLeft: 500,
-    // },
-];
-// const getOpertionByContract = async (
-//     options: GetOperationByContractOptions
-// ): Promise<Event[]> => {
-//     try {
-//         const res = await axios.get(
-//             `${TZKT_ENDPOINT}/operations/transactions`,
-//             {
-//                 params: {
-//                     contract: options.contract,
-//                     entrypoint: options.entrypoint,
-//                     [`level.ge`]: options.firstlevel,
-//                     [`level.le`]: options.lastlevel,
-//                     status: "applied",
-//                 },
-//             }
-//         );
-//         const eventsOperations: Event[] = [];
-//         res.data.forEach((op: any) => {
-//             eventsOperations.push({
-//                 block: op.data.block,
-//                 sender: op.data.sender.address,
-
-//             });
-//         });
-//         return eventsOperations;
-//     } catch (err) {
-//         throw err;
-//     }
-// };
-
-// const getContractLevels = async (contract: string) => {
-//     try {
-//         const res = await axios.get(`${TZKT_ENDPOINT}/contracts/${contract}`);
-//         return [res.data.firstActivity, res.data.lastActivity];
-//     } catch (err) {
-//         throw err;
-//     }
-// };
+export const events: Event[] = [];
 
 const fetchIpfsMetadata = async (hash: string) => {
     const { data } = await axios.get(
@@ -98,14 +42,13 @@ const fetchEvents = async (address: string) => {
     let events: Event[] = [];
     for (let eventAddress of Object.keys(data.metadatas)) {
         const hash = bytes2Char(data.metadatas[eventAddress]);
-        console.log(hash);
         const metadata = await fetchIpfsMetadata(hash);
-        console.log(metadata, typeof metadata);
         events.push({
             address: eventAddress,
             description: metadata.description,
             name: metadata.name,
             thumbnailUri: metadata.thumbnailUri,
+            admin: metadata.admin,
         });
     }
     return events;

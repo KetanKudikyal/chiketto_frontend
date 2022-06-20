@@ -1,3 +1,4 @@
+import { ExternalLinkIcon } from "@chakra-ui/icons";
 import {
     Heading,
     Avatar,
@@ -9,8 +10,10 @@ import {
     Stack,
     Button,
     useColorModeValue,
+    Link as ChakraLink,
 } from "@chakra-ui/react";
 import Link from "next/link";
+import { NETWORK } from "../../globals";
 import { Event } from "../../pages/events";
 import Card from "./card";
 
@@ -42,7 +45,7 @@ export default function CardA({ event }: { event: Event }) {
                         </Heading>
                         <Text color={"gray.500"}>{event.description}</Text>
                     </Stack>
-                    <Stack direction={"row"} justify={"center"} spacing={6}>
+                    {/* <Stack direction={"row"} justify={"center"} spacing={6}>
                         <Stack spacing={0} align={"center"}>
                             <Text fontWeight={600}>{event.name}</Text>
                             <Text fontSize={"sm"} color={"gray.500"}>
@@ -54,6 +57,24 @@ export default function CardA({ event }: { event: Event }) {
                             <Text fontSize={"sm"} color={"gray.500"}>
                                 Price in USD
                             </Text>
+                        </Stack>
+                    </Stack> */}
+                    <Stack direction={"row"} justify={"space-between"}>
+                        <Stack direction={"row"}>
+                            <Text>Creator:</Text>
+
+                            <ChakraLink
+                                href={`https://better-call.dev/${NETWORK}/${event.admin}`}
+                                isExternal
+                            >
+                                {event.admin.slice(0, 4) +
+                                    "..." +
+                                    event.admin.slice(
+                                        event.admin.length - 4,
+                                        event.admin.length
+                                    )}
+                                <ExternalLinkIcon mx="2px" />
+                            </ChakraLink>
                         </Stack>
                     </Stack>
                     <Link href={`/events/${event.address}`}>
@@ -68,7 +89,7 @@ export default function CardA({ event }: { event: Event }) {
                                 boxShadow: "lg",
                             }}
                         >
-                            Buy
+                            Check Event
                         </Button>
                     </Link>
                 </Box>
