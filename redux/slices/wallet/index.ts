@@ -45,6 +45,7 @@ export const fetchWallet = createAsyncThunk(
 export const disconnectWallet = createAsyncThunk(
     "disconnectWallet",
     async () => {
+        await wallet.clearActiveAccount();
         await wallet.disconnect();
     }
 );

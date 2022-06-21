@@ -29,10 +29,6 @@ import {
     fetchWallet,
     setWalletAddress,
 } from "../../redux/slices/wallet";
-import { TezosToolkit } from "@taquito/taquito";
-import { NetworkType } from "@airgap/beacon-types";
-import { NETWORK, RPC_NODE } from "../../globals";
-import { wallet } from "../../common/wallet";
 import WalletModal from "../Modal/WalletModal";
 
 export default function Navbar() {
@@ -41,14 +37,15 @@ export default function Navbar() {
         (state) => state.walletAddress
     );
     const dispatch = useAppDispatch();
+    const handleConnectWallet = async () => {
+        dispatch(connectWallet());
+    };
+    const { isOpen: isOpenWallet, onOpen, onClose } = useDisclosure();
+
+    // Use Effect Hook
     React.useEffect(() => {
         dispatch(fetchWallet());
     }, []);
-    console.log(loading);
-    const handleConnectWallet = async () => {
-        const dd = dispatch(connectWallet());
-    };
-    const { isOpen: isOpenWallet, onOpen, onClose } = useDisclosure();
 
     return (
         <Box mx={"auto"} maxW="8xl">

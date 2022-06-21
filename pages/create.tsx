@@ -121,10 +121,9 @@ const Create = () => {
         setIsBtnLoading(false);
     };
 
-    const createTicket = async () => {};
     const handleCreateTicketForm = async (
         e: React.FormEvent<HTMLFormElement>
-    ) => {
+    ): Promise<void> => {
         let imageIPFSUri: string = "";
         let imageType: string = "";
         let imageDimension: string = "1200x700";
@@ -143,7 +142,7 @@ const Create = () => {
             return;
         }
 
-        // Upload the image to IPFS first.
+        // # Upload the image to IPFS first.
         if (ticketImg) {
             const res = await uploadToIPFS(ticketImg);
             let u = URL.createObjectURL(ticketImg);
@@ -172,7 +171,7 @@ const Create = () => {
             return;
         }
 
-        // Create the metadata and upload this metadata to IPFS.
+        // # Create the metadata and upload this metadata to IPFS.
         const metadata = {
             id: 0,
             name: ticketName,
@@ -210,12 +209,13 @@ const Create = () => {
         });
         if (!metadataRes.status) return;
 
-        // Call the createTicket transaction
+        // # Call the createTicket transaction
+        // if (wallet.)
         const contract = await tezos.wallet.at(ticketEvent);
         const op = await contract.methods
             .createTicket(
                 ticketQuantity,
-                ticketPrice * 10 ** 6,
+                ticketPrice * 1_000_000,
                 char2Bytes(metadataUri)
             )
             .send();
