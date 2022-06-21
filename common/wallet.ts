@@ -5,7 +5,7 @@ import { NetworkType } from "@airgap/beacon-types";
 
 // Beacon Wallet instance
 export const wallet = new BeaconWallet({
-    name: "Sizzler Network Dapp",
+    name: "Chiketto",
     preferredNetwork: NETWORK as NetworkType,
 });
 

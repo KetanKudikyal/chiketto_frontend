@@ -18,7 +18,6 @@ export const connectWallet = createAsyncThunk(
     // if you type your function argument here
     async () => {
         let account = await wallet.client.getActiveAccount();
-        await wallet.disconnect();
         // debugger
         if (!account) {
             await wallet.requestPermissions({

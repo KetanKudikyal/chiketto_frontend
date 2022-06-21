@@ -40,6 +40,7 @@ export const fetchUsersEvents = async (
         filteredContractAddresses = [];
     }
     filteredContractAddresses = data.userEvents[userAddress];
+    if (!filteredContractAddresses) return [];
 
     const events = await fetchEvents(contractAddress);
     events.filter((e) => filteredContractAddresses.includes(e.address));

@@ -15,10 +15,12 @@ import { char2Bytes } from "@taquito/utils";
 import React, { useEffect, useState } from "react";
 import { tezos, wallet } from "../common/wallet";
 import Navbar from "../components/Navbar";
-import { FACTORY_CONTRACT, FEE } from "../globals";
+import { FACTORY_CONTRACT, FEE, RPC_NODE } from "../globals";
 import { uploadJSONToIPFS, uploadToIPFS } from "../common/ipfs";
 import { Event } from "../common/types";
 import { fetchEvents, fetchUsersEvents } from "../common/tzkt";
+import { useAppSelector } from "../redux/hook";
+import { TezosToolkit } from "@taquito/taquito";
 
 const Create = () => {
     const [name, setName] = useState("");
@@ -35,6 +37,10 @@ const Create = () => {
     const [ticketEvent, setTicketEvent] = useState<string>("");
     const toast = useToast();
     const [isEventBtnLoading, setIsEventBtnLoading] = useState<boolean>(false);
+
+    const { walletAddress, loading } = useAppSelector(
+        (state) => state.walletAddress
+    );
 
     const createEventContract = async (
         name: string,
@@ -210,8 +216,9 @@ const Create = () => {
         if (!metadataRes.status) return;
 
         // # Call the createTicket transaction
-        // if (wallet.)
+        console.log("Start");
         const contract = await tezos.wallet.at(ticketEvent);
+        console.log("Contract object created");
         const op = await contract.methods
             .createTicket(
                 ticketQuantity,
@@ -219,6 +226,7 @@ const Create = () => {
                 char2Bytes(metadataUri)
             )
             .send();
+        console.log("Sent...");
 
         toast({
             title: "Transaction Sent.",
@@ -227,7 +235,7 @@ const Create = () => {
             duration: 9000,
             isClosable: true,
         });
-        await op.confirmation();
+        await op.confirmation(1);
         toast({
             title: "Transaction Confirmed",
             description: "Ticket created successfully.",
@@ -239,13 +247,24 @@ const Create = () => {
     };
 
     useEffect(() => {
+        console.log("Doing again....");
         async function doSomething() {
             const pkh = await wallet.getPKH();
             const ev = await fetchUsersEvents(FACTORY_CONTRACT, pkh);
             setMyEvents(ev);
         }
-        doSomething();
-    }, []);
+        if (!walletAddress) {
+            toast({
+                title: "Error",
+                description: "Please connect to a wallet.",
+                status: "error",
+                duration: 9000,
+                isClosable: true,
+            });
+        } else {
+            doSomething();
+        }
+    }, [walletAddress]);
 
     return (
         <div>
