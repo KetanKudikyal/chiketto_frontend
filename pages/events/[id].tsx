@@ -47,12 +47,12 @@ const EventPage = () => {
             <Grid
                 maxW={"7xl"}
                 mx="auto"
-                mt={20}
                 templateColumns={{
                     lg: "repeat(2, 1fr)",
                     base: "repeat(1, 1fr)",
                 }}
                 gap={6}
+                mt={{ lg: -350, base: 0 }}
             >
                 {allTickets.map((ticket, index) => (
                     <>
@@ -63,7 +63,6 @@ const EventPage = () => {
                     </>
                 ))}
             </Grid>
-            <Box></Box>
         </div>
     );
 };

@@ -43,7 +43,7 @@ export default function FullWidthCard({ ticket }: { ticket: Ticket }) {
         });
     };
     return (
-        <Center py={6} w={"100%"} mt={{ lg: -350, base: 0 }} zIndex={10}>
+        <Center py={6} w={"100%"} zIndex={30} pos="relative">
             <Box
                 w={"full"}
                 boxShadow={"2xl"}
@@ -54,15 +54,15 @@ export default function FullWidthCard({ ticket }: { ticket: Ticket }) {
                 <Box
                     w="full"
                     style={{
-                        border: "4px solid #041C32",
+                        border: "4px solid #181818",
                     }}
                     height={"320px"}
                     pos="relative"
-                    zIndex={10}
                 >
                     <Image src={ticket.artifactUri} alt="NFTIM" layout="fill" />
                 </Box>
-                <Box p={6}>
+
+                <Box p={6} zIndex={50}>
                     <Stack spacing={0} align={"center"} mb={5}>
                         <Heading
                             fontSize={"2xl"}
