@@ -330,8 +330,8 @@ const Create = () => {
                                     border={"gray.400"}
                                     borderWidth={2}
                                 >
-                                    <Heading>Create Event</Heading>
-                                    <Stack>
+                                    <Heading mb={3}>Create Event</Heading>
+                                    <Stack mb={3}>
                                         <Text>Name: </Text>
                                         <Input
                                             value={name}
@@ -344,7 +344,7 @@ const Create = () => {
                                             isRequired={true}
                                         />
                                     </Stack>
-                                    <Stack>
+                                    <Stack mb={3}>
                                         <Text>Description: </Text>
                                         <Textarea
                                             value={desc}
@@ -357,7 +357,7 @@ const Create = () => {
                                             isRequired={true}
                                         ></Textarea>
                                     </Stack>
-                                    <Stack>
+                                    <Stack mb={3}>
                                         <Text>Image: </Text>
                                         <Input
                                             onChange={(e) =>
@@ -377,7 +377,7 @@ const Create = () => {
                                             isRequired={true}
                                         />
                                     </Stack>
-                                    <Stack alignItems={"start"}>
+                                    <Stack mt={4} alignItems={"start"}>
                                         <Button
                                             type="submit"
                                             colorScheme="blue"
@@ -404,8 +404,8 @@ const Create = () => {
                                     border={"gray.400"}
                                     borderWidth={2}
                                 >
-                                    <Heading>Create Ticket</Heading>
-                                    <Stack>
+                                    <Heading mb={3}>Create Ticket</Heading>
+                                    <Stack mb={3}>
                                         <Text>Event: </Text>
                                         <Select
                                             placeholder="Select Event"
@@ -425,7 +425,7 @@ const Create = () => {
                                             ))}
                                         </Select>
                                     </Stack>
-                                    <Stack>
+                                    <Stack mb={3}>
                                         <Text>Name: </Text>
                                         <Input
                                             value={ticketName}
@@ -438,7 +438,8 @@ const Create = () => {
                                             isRequired={true}
                                         />
                                     </Stack>
-                                    <Stack>
+
+                                    <Stack mb={3}>
                                         <Text>Description: </Text>
                                         <Textarea
                                             value={ticketDesc}
@@ -451,7 +452,7 @@ const Create = () => {
                                             isRequired={true}
                                         ></Textarea>
                                     </Stack>
-                                    <Stack>
+                                    <Stack mb={3}>
                                         <Text>Quantity: </Text>
                                         <Input
                                             value={ticketQuantity}
@@ -467,7 +468,7 @@ const Create = () => {
                                             isRequired={true}
                                         />
                                     </Stack>
-                                    <Stack>
+                                    <Stack mb={3}>
                                         <Text>Price (in XTZ): </Text>
                                         <Input
                                             value={ticketPrice}
@@ -483,7 +484,7 @@ const Create = () => {
                                             isRequired={true}
                                         />
                                     </Stack>
-                                    <Stack>
+                                    <Stack mb={3}>
                                         <Text>Image: </Text>
                                         <Input
                                             onChange={(e) =>
@@ -503,7 +504,7 @@ const Create = () => {
                                             isRequired={true}
                                         />
                                     </Stack>
-                                    <Stack alignItems={"start"}>
+                                    <Stack mt={4} alignItems={"start"}>
                                         <Button
                                             type="submit"
                                             colorScheme="blue"
