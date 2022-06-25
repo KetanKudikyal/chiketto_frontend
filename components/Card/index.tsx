@@ -64,7 +64,7 @@ export default function CardA({
                 rounded={"md"}
                 overflow={"hidden"}
             >
-                <Box width={"100%"} height={280} pos="relative">
+                <Box width={"100%"} height={250} pos="relative">
                     <Image
                         src={`https://gateway.pinata.cloud/ipfs/${event.thumbnailUri}`}
                         layout={"fill"}
