@@ -88,6 +88,17 @@ const Create = () => {
     };
 
     const handleCreateForm = async (e: React.FormEvent<HTMLFormElement>) => {
+        if (!walletAddress) {
+            toast({
+                title: "Error",
+                description: "Please connect to a wallet.",
+                status: "error",
+                duration: 9000,
+                isClosable: true,
+            });
+            setIsEventBtnLoading(false);
+            return;
+        }
         let ipfsUri: string = "";
         setIsBtnLoading(true);
         e.preventDefault();
@@ -130,6 +141,18 @@ const Create = () => {
     const handleCreateTicketForm = async (
         e: React.FormEvent<HTMLFormElement>
     ): Promise<void> => {
+        // Check the wallet and show error if not connected.
+        if (!walletAddress) {
+            toast({
+                title: "Error",
+                description: "Please connect to a wallet.",
+                status: "error",
+                duration: 9000,
+                isClosable: true,
+            });
+            setIsEventBtnLoading(false);
+            return;
+        }
         let imageIPFSUri: string = "";
         let imageType: string = "";
         let imageDimension: string = "1200x700";
@@ -145,6 +168,7 @@ const Create = () => {
                 duration: 9000,
                 isClosable: true,
             });
+            setIsEventBtnLoading(false);
             return;
         }
 
@@ -165,7 +189,10 @@ const Create = () => {
                 duration: 9000,
                 isClosable: true,
             });
-            if (!res.status) return;
+            if (!res.status) {
+                setIsEventBtnLoading(false);
+                return;
+            }
         } else {
             toast({
                 title: "No file",
@@ -174,6 +201,7 @@ const Create = () => {
                 duration: 9000,
                 isClosable: true,
             });
+            setIsEventBtnLoading(false);
             return;
         }
 
@@ -213,10 +241,13 @@ const Create = () => {
             duration: 9000,
             isClosable: true,
         });
-        if (!metadataRes.status) return;
+        if (!metadataRes.status) {
+            setIsEventBtnLoading(false);
+            return;
+        }
 
         // # Call the createTicket transaction
-        console.log("Start");
+        console.log("Start", ticketEvent);
         const contract = await tezos.wallet.at(ticketEvent);
         console.log("Contract object created");
         const op = await contract.methods

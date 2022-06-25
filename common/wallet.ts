@@ -11,4 +11,6 @@ export const wallet = new BeaconWallet({
 
 // Tezos instance
 export const tezos = new TezosToolkit(RPC_NODE);
-tezos.setWalletProvider(wallet);
+(async () => {
+    tezos.setWalletProvider(wallet);
+})();

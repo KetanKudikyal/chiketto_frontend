@@ -5,19 +5,28 @@ import Navbar from "../../components/Navbar";
 import { FACTORY_CONTRACT, TZKT_ENDPOINT } from "../../globals";
 import axios from "axios";
 import { bytes2Char } from "@taquito/utils";
-import { fetchEvents, fetchIpfsMetadata } from "../../common/tzkt";
+import { fetchEvents, fetchIpfsMetadata, isConnected } from "../../common/tzkt";
 import { Event } from "../../common/types";
 
 export const events: Event[] = [];
 
 const Events = () => {
     const [events, setEvents] = useState<Event[]>([]);
+    const [connectedMap, setConnectedMap] = useState<{
+        [key: string]: boolean;
+    }>({});
 
     useEffect(() => {
         async function doSomething() {
             // Fetch all the create events operations
             const ev = await fetchEvents(FACTORY_CONTRACT);
+            const evMap: { [key: string]: boolean } = {};
+            for (let e of ev) {
+                const isC = await isConnected(e.address);
+                evMap[e.address] = isC;
+            }
             setEvents(ev);
+            setConnectedMap(evMap);
         }
         doSomething();
     }, []);
@@ -33,7 +42,11 @@ const Events = () => {
                 alignItems="center"
             >
                 {events.map((item, index) => (
-                    <Card key={index} event={item} />
+                    <Card
+                        key={index}
+                        event={item}
+                        isConnected={connectedMap[item.address]}
+                    />
                 ))}
             </Box>
         </div>

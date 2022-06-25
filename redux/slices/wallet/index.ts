@@ -23,7 +23,8 @@ export const connectWallet = createAsyncThunk(
             await wallet.requestPermissions({
                 network: { type: NETWORK as NetworkType },
             });
-            return await wallet.getPKH();
+            const pkh = await wallet.getPKH();
+            return pkh;
         }
         // debugger
         return account.address;

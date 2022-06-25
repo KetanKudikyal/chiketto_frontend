@@ -1,9 +1,21 @@
 import { Box, Image } from "@chakra-ui/react";
-import React from "react";
+import { useRouter } from "next/router";
+import React, { useEffect } from "react";
+import { fetchAllTicketsForEvent } from "../../common/tzkt";
 import FullWidthCard from "../../components/Card/FullWidthCard";
 import Navbar from "../../components/Navbar";
 
 const EventPage = () => {
+    const router = useRouter();
+    useEffect(() => {
+        async function doSomething() {
+            const allTickets = await fetchAllTicketsForEvent(
+                router.query.id as string
+            );
+            console.log(allTickets);
+        }
+        doSomething();
+    });
     return (
         <div>
             <Navbar />

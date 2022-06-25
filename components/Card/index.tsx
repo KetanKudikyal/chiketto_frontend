@@ -11,13 +11,50 @@ import {
     Button,
     useColorModeValue,
     Link as ChakraLink,
+    useToast,
 } from "@chakra-ui/react";
 import Link from "next/link";
 import { NETWORK } from "../../globals";
-import { Event } from "../../pages/events";
+// import { Event } from "../../pages/events";
+import { Event } from "../../common/types";
 import Card from "./card";
+import { tezos, wallet } from "../../common/wallet";
+import { fetchFA2For } from "../../common/tzkt";
 
-export default function CardA({ event }: { event: Event }) {
+export default function CardA({
+    event,
+    isConnected,
+}: {
+    event: Event;
+    isConnected: boolean;
+}) {
+    const toast = useToast();
+    const trasferOwnership = async (eventAddress: string) => {
+        const pkh = await wallet.getPKH();
+        const fa2 = await fetchFA2For(eventAddress);
+
+        const contract = await tezos.wallet.at(fa2);
+        const op = await contract.methods
+            .set_administrator(eventAddress)
+            .send();
+        toast({
+            title: "Transaction Sent",
+            description:
+                "Transaction to make the event contract, admin of fa2 is sent.",
+            status: "success",
+            duration: 9000,
+            isClosable: true,
+        });
+        await op.confirmation();
+        toast({
+            title: "Transaction Confirmend",
+            description:
+                "Transaction to make the event contract, admin of fa2 is confirmed.",
+            status: "success",
+            duration: 9000,
+            isClosable: true,
+        });
+    };
     return (
         <Center py={6} w="full" m={6}>
             <Box
@@ -75,6 +112,17 @@ export default function CardA({ event }: { event: Event }) {
                                     )}
                                 <ExternalLinkIcon mx="2px" />
                             </ChakraLink>
+                        </Stack>
+                        <Stack>
+                            {!isConnected && (
+                                <Button
+                                    onClick={() => {
+                                        trasferOwnership(event.address);
+                                    }}
+                                >
+                                    Connect
+                                </Button>
+                            )}
                         </Stack>
                     </Stack>
                     <Link href={`/events/${event.address}`}>

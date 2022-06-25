@@ -17,3 +17,11 @@ export type CreateEventOperationType = {
     sender: string;
     value: string;
 };
+
+export type Ticket = {
+    id: number;
+    name: string;
+    description: string;
+    artifactUri: string;
+    price: number;
+};
