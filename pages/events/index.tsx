@@ -1,4 +1,4 @@
-import { Box, Container } from "@chakra-ui/react";
+import { Box, Container, Grid, GridItem } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import Card from "../../components/Card";
 import Navbar from "../../components/Navbar";
@@ -31,11 +31,20 @@ const Events = () => {
                 display={"flex"}
                 justifyContent="between"
                 alignItems="center"
+            ></Box>
+
+            <Grid
+                maxW={"8xl"}
+                mx="auto"
+                templateColumns="repeat(3, 1fr)"
+                gap={6}
             >
                 {events.map((item, index) => (
-                    <Card key={index} event={item} />
+                    <GridItem key={item}>
+                        <Card event={item} />
+                    </GridItem>
                 ))}
-            </Box>
+            </Grid>
         </div>
     );
 };

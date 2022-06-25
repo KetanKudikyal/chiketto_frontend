@@ -4,7 +4,6 @@ import {
     Avatar,
     Box,
     Center,
-    Image,
     Flex,
     Text,
     Stack,
@@ -12,9 +11,10 @@ import {
     useColorModeValue,
     Link as ChakraLink,
 } from "@chakra-ui/react";
+import Image from "next/image";
 import Link from "next/link";
+import { Event } from "../../common/types";
 import { NETWORK } from "../../globals";
-import { Event } from "../../pages/events";
 import Card from "./card";
 
 export default function CardA({ event }: { event: Event }) {
@@ -27,23 +27,27 @@ export default function CardA({ event }: { event: Event }) {
                 rounded={"md"}
                 overflow={"hidden"}
             >
-                <Image
-                    h={"220px"}
-                    w={"full"}
-                    src={`https://gateway.pinata.cloud/ipfs/${event.thumbnailUri}`}
-                    objectFit={"cover"}
-                    alt="Image"
-                />
+                <Box width={"100%"} height={300} pos="relative">
+                    <Image
+                        src={`https://gateway.pinata.cloud/ipfs/${event.thumbnailUri}`}
+                        layout={"fill"}
+                        alt="Image"
+                    />
+                </Box>
+
                 <Box p={6}>
                     <Stack spacing={0} align={"center"} mb={5}>
                         <Heading
                             fontSize={"2xl"}
                             fontWeight={500}
+                            mb={4}
                             fontFamily={"body"}
                         >
                             {event.name}
                         </Heading>
-                        <Text color={"gray.500"}>{event.description}</Text>
+                        <Text color={"gray.500"}>
+                            {event.description.slice(0, 120)}...
+                        </Text>
                     </Stack>
                     {/* <Stack direction={"row"} justify={"center"} spacing={6}>
                         <Stack spacing={0} align={"center"}>
