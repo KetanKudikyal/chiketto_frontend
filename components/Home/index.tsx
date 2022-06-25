@@ -40,11 +40,10 @@ const Home = () => {
                         Chiketto
                     </Text>
                     <Text my={4} textAlign={{ lg: "left", base: "center" }}>
-                        Lorem ipsum dolor sit amet consectetur, adipisicing
-                        elit. Itaque fugit magnam laborum, sunt atque quia
-                        aperiam commodi molestias expedita earum ipsum sit
-                        reprehenderit delectus excepturi vero obcaecati quos
-                        nihil fugiat?
+                        Chiketto is an open-source platform for issuing tickets
+                        on the Tezos blockchain as tokens, and offering friendly
+                        user flows for gaining admittance to events using these
+                        NFT tickets (and to control admittance at the gate).
                     </Text>
                     <Flex
                         justifyContent={{
