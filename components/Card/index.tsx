@@ -56,7 +56,7 @@ export default function CardA({
         });
     };
     return (
-        <Center py={6} w="full" m={6}>
+        <Center py={6} w="full">
             <Box
                 bg="#04293A"
                 w={"full"}

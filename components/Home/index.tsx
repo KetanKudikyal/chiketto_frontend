@@ -15,29 +15,43 @@ const Home = () => {
     const router = useRouter();
     return (
         <Grid
-            templateColumns="repeat(2, 1fr)"
+            templateColumns={{ lg: "repeat(2, 1fr)", base: "repeat(1, 1fr)" }}
             px={{ base: 4 }}
             mx={"auto"}
             maxW="7xl"
+            mt={{ lg: 10, base: 20 }}
             gap={6}
-            height={"90vh"}
+            height={{ lg: "90vh", base: "fit" }}
         >
             <GridItem w="100%" display={"flex"} alignItems="center">
                 <Box>
-                    <Text fontSize="6xl" fontWeight={700}>
+                    <Text
+                        fontSize="6xl"
+                        textAlign={{ lg: "left", base: "center" }}
+                        fontWeight={700}
+                    >
                         Welcome to
                     </Text>
-                    <Text fontSize="6xl" fontWeight={700}>
+                    <Text
+                        fontSize="6xl"
+                        textAlign={{ lg: "left", base: "center" }}
+                        fontWeight={700}
+                    >
                         Chiketto
                     </Text>
-                    <Text my={4}>
+                    <Text my={4} textAlign={{ lg: "left", base: "center" }}>
                         Lorem ipsum dolor sit amet consectetur, adipisicing
                         elit. Itaque fugit magnam laborum, sunt atque quia
                         aperiam commodi molestias expedita earum ipsum sit
                         reprehenderit delectus excepturi vero obcaecati quos
                         nihil fugiat?
                     </Text>
-                    <Flex>
+                    <Flex
+                        justifyContent={{
+                            base: "center",
+                            lg: "start",
+                        }}
+                    >
                         <Button
                             variant="solid"
                             mt={6}
@@ -58,12 +72,17 @@ const Home = () => {
             </GridItem>
             <GridItem
                 w="full"
-                h="full"
+                h="500px"
                 display="flex"
                 justifyContent={"end"}
+                my={20}
                 alignItems="end"
             >
-                <Box w={"80%"} pos={"relative"} h={"80%"}>
+                <Box
+                    w={{ base: "100%", lg: "80%" }}
+                    pos={"relative"}
+                    h={{ base: "100%", lg: "80%" }}
+                >
                     <Image src={"/ticket.png"} alt="ticket" layout="fill" />
                 </Box>
             </GridItem>

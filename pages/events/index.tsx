@@ -33,12 +33,14 @@ const Events = () => {
     return (
         <div>
             <Navbar />
-
             <Grid
                 maxW={"7xl"}
                 mx="auto"
                 mt={20}
-                templateColumns="repeat(3, 1fr)"
+                templateColumns={{
+                    lg: "repeat(3, 1fr)",
+                    base: "repeat(1, 1fr)",
+                }}
                 gap={6}
             >
                 {events.map((item, index) => (

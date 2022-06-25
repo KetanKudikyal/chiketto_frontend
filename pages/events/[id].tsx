@@ -28,7 +28,16 @@ const EventPage = () => {
     return (
         <div>
             <Navbar />
-            <Box width={"100%"} height={480} mt={20} pos="relative">
+            <Box
+                display={{
+                    lg: "block",
+                    base: "none",
+                }}
+                width={"100%"}
+                height={480}
+                mt={20}
+                pos="relative"
+            >
                 <Image
                     src={`https://gateway.pinata.cloud/ipfs/${router.query.image}`}
                     layout={"fill"}
@@ -39,7 +48,10 @@ const EventPage = () => {
                 maxW={"7xl"}
                 mx="auto"
                 mt={20}
-                templateColumns="repeat(2, 1fr)"
+                templateColumns={{
+                    lg: "repeat(2, 1fr)",
+                    base: "repeat(1, 1fr)",
+                }}
                 gap={6}
             >
                 {allTickets.map((ticket, index) => (
