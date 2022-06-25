@@ -11,7 +11,7 @@ const defaultMeta = {
     type: "website",
     robots: "follow, index",
     /** No need to be filled, will be populated with openGraph function */
-    image: "https://app.curato.link/curato_OG_Image.png",
+    image: "",
 };
 
 type SeoProps = {
