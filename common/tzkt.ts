@@ -96,12 +96,14 @@ export const fetchAllTicketsForEvent = async (eventAddress: string) => {
                     "https://gateway.pinata.cloud/ipfs/"
                 )
             );
-            console.log(metadataObject);
             tickets.push({
                 id: parseInt(ticket.value.token_id),
                 name: metadataObject.data.name,
                 description: metadataObject.data.description,
-                artifactUri: metadataObject.data.artifactUri,
+                artifactUri: metadataObject.data.artifactUri.replace(
+                    "ipfs://",
+                    "https://gateway.pinata.cloud/ipfs/"
+                ),
                 price: parseInt(priceMap[ticket.value.token_id]),
             });
         })

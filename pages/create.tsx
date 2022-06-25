@@ -309,6 +309,7 @@ const Create = () => {
             {/* Event Form */}
             <Box
                 maxW={"3xl"}
+                mt={100}
                 marginX={"auto"}
                 p={6}
                 rounded={"sm"}

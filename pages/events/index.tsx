@@ -33,18 +33,11 @@ const Events = () => {
     return (
         <div>
             <Navbar />
-            <Box
-                maxW={"3xls"}
-                mt={10}
-                mx="auto"
-                display={"flex"}
-                justifyContent="between"
-                alignItems="center"
-            ></Box>
 
             <Grid
                 maxW={"8xl"}
                 mx="auto"
+                mt={20}
                 templateColumns="repeat(3, 1fr)"
                 gap={6}
             >

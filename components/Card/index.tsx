@@ -64,7 +64,7 @@ export default function CardA({
                 rounded={"md"}
                 overflow={"hidden"}
             >
-                <Box width={"100%"} height={300} pos="relative">
+                <Box width={"100%"} height={280} pos="relative">
                     <Image
                         src={`https://gateway.pinata.cloud/ipfs/${event.thumbnailUri}`}
                         layout={"fill"}
@@ -119,17 +119,20 @@ export default function CardA({
                         </Stack>
                         <Stack>
                             {!isConnected && (
-                                <Button
+                                <ChakraLink
                                     onClick={() => {
                                         trasferOwnership(event.address);
                                     }}
+                                    isExternal
                                 >
                                     Connect
-                                </Button>
+                                </ChakraLink>
                             )}
                         </Stack>
                     </Stack>
-                    <Link href={`/events/${event.address}`}>
+                    <Link
+                        href={`/events/${event.address}?image=${event.thumbnailUri}`}
+                    >
                         <Button
                             w={"full"}
                             mt={8}

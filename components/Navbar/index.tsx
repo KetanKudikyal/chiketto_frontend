@@ -48,98 +48,100 @@ export default function Navbar() {
     }, []);
 
     return (
-        <Box mx={"auto"} maxW="8xl">
-            <WalletModal isOpen={isOpenWallet} onClose={onClose} />
-            <Flex
-                bg={"primary.main"}
-                minH={"60px"}
-                color="white"
-                py={{ base: 2 }}
-                px={{ base: 4 }}
-                align={"center"}
-            >
+        <Box pos="relative" mb={30} display={"flex"} justifyContent="center">
+            <Box maxW="8xl" zIndex={20} w="full" pos="fixed" top={0}>
+                <WalletModal isOpen={isOpenWallet} onClose={onClose} />
                 <Flex
-                    flex={{ base: 1, md: "auto" }}
-                    ml={{ base: -2 }}
-                    display={{ base: "flex", md: "none" }}
+                    bg={"primary.main"}
+                    minH={"60px"}
+                    color="white"
+                    py={{ base: 2 }}
+                    px={{ base: 4 }}
+                    align={"center"}
                 >
-                    <IconButton
-                        onClick={onToggle}
-                        icon={
-                            isOpen ? (
-                                <CloseIcon w={3} h={3} />
-                            ) : (
-                                <HamburgerIcon w={5} h={5} />
-                            )
-                        }
-                        variant={"ghost"}
-                        aria-label={"Toggle Navigation"}
-                    />
-                </Flex>
-                <Flex
-                    flex={{ base: 1 }}
-                    justify={{ base: "center", md: "start" }}
-                >
-                    <Text
-                        textAlign={useBreakpointValue({
-                            base: "center",
-                            md: "left",
-                        })}
-                        fontFamily={"heading"}
-                        fontWeight={"bold"}
-                        textTransform={"uppercase"}
-                        color={"white"}
+                    <Flex
+                        flex={{ base: 1, md: "auto" }}
+                        ml={{ base: -2 }}
+                        display={{ base: "flex", md: "none" }}
                     >
-                        Chiketto
-                    </Text>
-
-                    <Flex display={{ base: "none", md: "flex" }} ml={10}>
-                        <DesktopNav />
+                        <IconButton
+                            onClick={onToggle}
+                            icon={
+                                isOpen ? (
+                                    <CloseIcon w={3} h={3} />
+                                ) : (
+                                    <HamburgerIcon w={5} h={5} />
+                                )
+                            }
+                            variant={"ghost"}
+                            aria-label={"Toggle Navigation"}
+                        />
                     </Flex>
+                    <Flex
+                        flex={{ base: 1 }}
+                        justify={{ base: "center", md: "start" }}
+                    >
+                        <Text
+                            textAlign={useBreakpointValue({
+                                base: "center",
+                                md: "left",
+                            })}
+                            fontFamily={"heading"}
+                            fontWeight={"bold"}
+                            textTransform={"uppercase"}
+                            color={"white"}
+                        >
+                            Chiketto
+                        </Text>
+
+                        <Flex display={{ base: "none", md: "flex" }} ml={10}>
+                            <DesktopNav />
+                        </Flex>
+                    </Flex>
+
+                    <Stack
+                        flex={{ base: 1, md: 0 }}
+                        justify={"flex-end"}
+                        direction={"row"}
+                        spacing={6}
+                    >
+                        {walletAddress ? (
+                            <Button
+                                display={{ base: "none", md: "inline-flex" }}
+                                fontSize={"sm"}
+                                fontWeight={600}
+                                my={3}
+                                variant="outline"
+                                color={"white"}
+                                onClick={onOpen}
+                            >
+                                {walletAddress.slice(0, 4) +
+                                    "..." +
+                                    walletAddress.slice(
+                                        walletAddress.length - 4,
+                                        walletAddress.length
+                                    )}
+                            </Button>
+                        ) : (
+                            <Button
+                                display={{ base: "none", md: "inline-flex" }}
+                                fontSize={"sm"}
+                                fontWeight={600}
+                                my={3}
+                                variant="solid"
+                                color={"white"}
+                                onClick={handleConnectWallet}
+                            >
+                                Connect Wallet
+                            </Button>
+                        )}
+                    </Stack>
                 </Flex>
 
-                <Stack
-                    flex={{ base: 1, md: 0 }}
-                    justify={"flex-end"}
-                    direction={"row"}
-                    spacing={6}
-                >
-                    {walletAddress ? (
-                        <Button
-                            display={{ base: "none", md: "inline-flex" }}
-                            fontSize={"sm"}
-                            fontWeight={600}
-                            my={3}
-                            variant="outline"
-                            color={"white"}
-                            onClick={onOpen}
-                        >
-                            {walletAddress.slice(0, 4) +
-                                "..." +
-                                walletAddress.slice(
-                                    walletAddress.length - 4,
-                                    walletAddress.length
-                                )}
-                        </Button>
-                    ) : (
-                        <Button
-                            display={{ base: "none", md: "inline-flex" }}
-                            fontSize={"sm"}
-                            fontWeight={600}
-                            my={3}
-                            variant="solid"
-                            color={"white"}
-                            onClick={handleConnectWallet}
-                        >
-                            Connect Wallet
-                        </Button>
-                    )}
-                </Stack>
-            </Flex>
-
-            <Collapse in={isOpen} animateOpacity>
-                <MobileNav />
-            </Collapse>
+                <Collapse in={isOpen} animateOpacity>
+                    <MobileNav />
+                </Collapse>
+            </Box>
         </Box>
     );
 }

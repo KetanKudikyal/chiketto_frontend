@@ -25,6 +25,7 @@ export const Button: ComponentStyleConfig = {
      variants: {
           solid: {
                bg: '#ECB365',
+
                border: "none",
                _hover: {
                     bg: '#ECB365'

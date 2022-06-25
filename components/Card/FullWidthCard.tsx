@@ -9,24 +9,55 @@ import {
     Stack,
     Button,
     useColorModeValue,
+    useToast,
 } from "@chakra-ui/react";
+import { useRouter } from "next/router";
+import { Ticket } from "../../common/types";
+import { fetchIpfsMetadata } from "../../common/tzkt";
+import { tezos } from "../../common/wallet";
 
-export default function FullWidthCard() {
+export default function FullWidthCard({ ticket }: { ticket: Ticket }) {
+    const router = useRouter();
+    const toast = useToast();
+
+    const buyTicket = async (ticketId: number, ticketPrice: number) => {
+        // Buying ticket.
+        const contract = await tezos.wallet.at(router.query.id as string);
+        const op = await contract.methods
+            .purchaseTicket(ticketId)
+            .send({ amount: ticketPrice, mutez: true });
+        toast({
+            title: "Transaction Sent.",
+            description: "Your transaction to purchase ticket is sent.",
+            status: "success",
+            duration: 9000,
+            isClosable: true,
+        });
+        await op.confirmation();
+        toast({
+            title: "Transaction Confirmed.",
+            description: "Your transaction to purchase ticket is confirmed.",
+            status: "success",
+            duration: 9000,
+            isClosable: true,
+        });
+    };
     return (
-        <Center py={6} w={"full"}>
+        <Center py={6} w={"90%"} mt={-300} zIndex={10}>
             <Box
                 w={"full"}
                 boxShadow={"2xl"}
-                rounded={"md"}
+                rounded={"lg"}
                 bg="#04293A"
                 overflow={"hidden"}
             >
                 <Image
+                    style={{
+                        filter: "grayscale(16)",
+                    }}
                     h={"400px"}
                     w={"full"}
-                    src={
-                        "https://images.unsplash.com/photo-1612865547334-09cb8cb455da?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80"
-                    }
+                    src={ticket.artifactUri}
                     alt={"Author"}
                     objectFit={"cover"}
                 />
@@ -38,30 +69,31 @@ export default function FullWidthCard() {
                             fontWeight={500}
                             fontFamily={"body"}
                         >
-                            First{" "}
+                            {ticket.name}
                         </Heading>
-                        <Text color={"gray.500"}>description</Text>
+                        <Text color={"gray.500"}>{ticket.description}</Text>
                     </Stack>
                     <Stack direction={"row"} justify={"center"} spacing={6}>
-                        <Stack spacing={0} align={"center"}>
+                        {/* <Stack spacing={0} align={"center"}>
                             <Text fontWeight={600}>23k</Text>
                             <Text fontSize={"sm"} color={"gray.500"}>
                                 TicketsLeft
                             </Text>
-                        </Stack>
+                        </Stack> */}
                         <Stack spacing={0} align={"center"}>
-                            <Text fontWeight={600}>23k</Text>
+                            <Text fontWeight={600}>Price</Text>
                             <Text fontSize={"sm"} color={"gray.500"}>
-                                Price
+                                {ticket.price}
                             </Text>
                         </Stack>
                     </Stack>
                     <Button
                         w={"full"}
+                        variant="solid"
                         mt={8}
-                        bg={useColorModeValue("#151f21", "gray.900")}
                         color={"white"}
                         rounded={"md"}
+                        onClick={() => buyTicket(ticket.id, ticket.price)}
                         _hover={{
                             transform: "translateY(-2px)",
                             boxShadow: "lg",
