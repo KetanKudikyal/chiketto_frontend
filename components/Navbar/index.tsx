@@ -48,8 +48,17 @@ export default function Navbar() {
     }, []);
 
     return (
-        <Box pos="relative" mb={30} display={"flex"} justifyContent="center">
-            <Box maxW="8xl" zIndex={20} w="full" pos="fixed" top={0}>
+        <Box
+            mb={30}
+            top={0}
+            zIndex={40}
+            display={"flex"}
+            bg={"primary.main"}
+            w="full"
+            pos="fixed"
+            justifyContent="center"
+        >
+            <Box maxW="8xl" bg={"primary.main"} w="full">
                 <WalletModal isOpen={isOpenWallet} onClose={onClose} />
                 <Flex
                     bg={"primary.main"}
