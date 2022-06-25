@@ -83,7 +83,7 @@ export default function FullWidthCard({ ticket }: { ticket: Ticket }) {
                         <Stack spacing={0} align={"center"}>
                             <Text fontWeight={600}>Price</Text>
                             <Text fontSize={"sm"} color={"gray.500"}>
-                                {ticket.price}
+                                {ticket.price / 10 ** 6} ꜩ
                             </Text>
                         </Stack>
                     </Stack>
