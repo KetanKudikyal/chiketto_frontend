@@ -35,7 +35,7 @@ const Events = () => {
             <Navbar />
 
             <Grid
-                maxW={"8xl"}
+                maxW={"7xl"}
                 mx="auto"
                 mt={20}
                 templateColumns="repeat(3, 1fr)"

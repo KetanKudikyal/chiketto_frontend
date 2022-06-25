@@ -18,7 +18,7 @@ const Home = () => {
             templateColumns="repeat(2, 1fr)"
             px={{ base: 4 }}
             mx={"auto"}
-            maxW="8xl"
+            maxW="7xl"
             gap={6}
             height={"90vh"}
         >
@@ -60,7 +60,7 @@ const Home = () => {
                 w="full"
                 h="full"
                 display="flex"
-                justifyContent={"center"}
+                justifyContent={"end"}
                 alignItems="end"
             >
                 <Box w={"80%"} pos={"relative"} h={"80%"}>

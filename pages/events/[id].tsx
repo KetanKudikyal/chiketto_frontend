@@ -1,4 +1,4 @@
-import { Box, useToast, Text } from "@chakra-ui/react";
+import { Box, useToast, Text, Grid, GridItem } from "@chakra-ui/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
@@ -35,23 +35,23 @@ const EventPage = () => {
                     alt="Image"
                 />
             </Box>
-            <Box>
+            <Grid
+                maxW={"7xl"}
+                mx="auto"
+                mt={20}
+                templateColumns="repeat(2, 1fr)"
+                gap={6}
+            >
                 {allTickets.map((ticket, index) => (
                     <>
-                        <Box
-                            // w={"7xl"}
-                            maxW={"3xl"}
-                            mt={10}
-                            mx="auto"
-                            display={"flex"}
-                            justifyContent="between"
-                            alignItems="center"
-                        >
+                        {" "}
+                        <GridItem key={index}>
                             <FullWidthCard ticket={ticket} />
-                        </Box>
+                        </GridItem>
                     </>
                 ))}
-            </Box>
+            </Grid>
+            <Box></Box>
         </div>
     );
 };

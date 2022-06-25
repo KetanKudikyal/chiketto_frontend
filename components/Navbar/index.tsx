@@ -16,6 +16,8 @@ import {
     Container,
     Link,
 } from "@chakra-ui/react";
+import NextLink from "next/link";
+
 import {
     HamburgerIcon,
     CloseIcon,
@@ -58,7 +60,7 @@ export default function Navbar() {
             pos="fixed"
             justifyContent="center"
         >
-            <Box maxW="8xl" bg={"primary.main"} w="full">
+            <Box maxW="7xl" bg={"primary.main"} w="full">
                 <WalletModal isOpen={isOpenWallet} onClose={onClose} />
                 <Flex
                     bg={"primary.main"}
@@ -90,7 +92,7 @@ export default function Navbar() {
                         flex={{ base: 1 }}
                         justify={{ base: "center", md: "start" }}
                     >
-                        <Text
+                        <Box
                             textAlign={useBreakpointValue({
                                 base: "center",
                                 md: "left",
@@ -100,8 +102,10 @@ export default function Navbar() {
                             textTransform={"uppercase"}
                             color={"white"}
                         >
-                            Chiketto
-                        </Text>
+                            <NextLink href="/" passHref>
+                                Chiketto
+                            </NextLink>
+                        </Box>
 
                         <Flex display={{ base: "none", md: "flex" }} ml={10}>
                             <DesktopNav />

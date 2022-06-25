@@ -3,7 +3,6 @@ import {
     Avatar,
     Box,
     Center,
-    Image,
     Flex,
     Text,
     Stack,
@@ -11,6 +10,7 @@ import {
     useColorModeValue,
     useToast,
 } from "@chakra-ui/react";
+import Image from "next/image";
 import { useRouter } from "next/router";
 import { Ticket } from "../../common/types";
 import { fetchIpfsMetadata } from "../../common/tzkt";
@@ -43,24 +43,25 @@ export default function FullWidthCard({ ticket }: { ticket: Ticket }) {
         });
     };
     return (
-        <Center py={6} w={"90%"} mt={-300} zIndex={10}>
+        <Center
+            py={6}
+            border={2}
+            borderColor="white"
+            w={"90%"}
+            mt={-350}
+            zIndex={10}
+        >
             <Box
+                border={2}
                 w={"full"}
                 boxShadow={"2xl"}
                 rounded={"lg"}
                 bg="#04293A"
                 overflow={"hidden"}
             >
-                <Image
-                    style={{
-                        filter: "grayscale(16)",
-                    }}
-                    h={"400px"}
-                    w={"full"}
-                    src={ticket.artifactUri}
-                    alt={"Author"}
-                    objectFit={"cover"}
-                />
+                <Box w="full" height={"300px"} pos="relative" zIndex={10}>
+                    <Image src={ticket.artifactUri} alt="NFTIM" layout="fill" />
+                </Box>
 
                 <Box p={6}>
                     <Stack spacing={0} align={"center"} mb={5}>
