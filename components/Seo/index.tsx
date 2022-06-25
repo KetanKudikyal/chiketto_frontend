@@ -63,26 +63,11 @@ export default function Seo(props: SeoProps) {
                 content={props.description || meta.description}
             />
             <meta property="og:title" content={meta.title} />
-            <meta
-                name="image"
-                property="og:image"
-                content={
-                    props.image ||
-                    "https://uploads-ssl.webflow.com/61dee9ada4a0639779df8f29/6225c6939aed62d7bac66bd4_OG%20Image.png"
-                }
-            />
             {/* Twitter */}
             <meta name="twitter:card" content="summary_large_image" />
             <meta name="twitter:site" content="@curatodotlink" />
             <meta name="twitter:title" content={meta.title} />
             <meta name="twitter:description" content={meta.description} />
-            <meta
-                content={
-                    props.image ||
-                    "https://uploads-ssl.webflow.com/61dee9ada4a0639779df8f29/6225c6939aed62d7bac66bd4_OG%20Image.png"
-                }
-                property="twitter:image"
-            />
             <meta property="og:type" content="website" />
             <meta content="summary_large_image" name="twitter:card" />
             {meta.date && (
