@@ -283,13 +283,14 @@ const Create = () => {
     };
 
     useEffect(() => {
+        console.log("Loading: ", loading);
         console.log("Doing again....");
         async function doSomething() {
             const pkh = await wallet.getPKH();
             const ev = await fetchUsersEvents(FACTORY_CONTRACT, pkh);
             setMyEvents(ev);
         }
-        if (!walletAddress) {
+        if (!walletAddress && loading !== "idle") {
             toast({
                 title: "Error",
                 description: "Please connect to a wallet.",
