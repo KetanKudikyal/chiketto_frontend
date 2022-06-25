@@ -1,18 +1,47 @@
-import { Box, Image } from "@chakra-ui/react";
+import { Box, Image, useToast, Text } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { Ticket } from "../../common/types";
 import { fetchAllTicketsForEvent } from "../../common/tzkt";
+import { tezos } from "../../common/wallet";
 import FullWidthCard from "../../components/Card/FullWidthCard";
 import Navbar from "../../components/Navbar";
 
 const EventPage = () => {
     const router = useRouter();
+    const toast = useToast();
+    const [allTickets, setAllTickets] = useState<Ticket[]>([]);
+
+    const buyTicket = async (ticketId: number, ticketPrice: number) => {
+        // Buying ticket.
+        const contract = await tezos.wallet.at(router.query.id as string);
+        const op = await contract.methods
+            .purchaseTicket(ticketId)
+            .send({ amount: ticketPrice, mutez: true });
+        toast({
+            title: "Transaction Sent.",
+            description: "Your transaction to purchase ticket is sent.",
+            status: "success",
+            duration: 9000,
+            isClosable: true,
+        });
+        await op.confirmation();
+        toast({
+            title: "Transaction Confirmed.",
+            description: "Your transaction to purchase ticket is confirmed.",
+            status: "success",
+            duration: 9000,
+            isClosable: true,
+        });
+    };
+
     useEffect(() => {
         async function doSomething() {
-            const allTickets = await fetchAllTicketsForEvent(
+            const all = await fetchAllTicketsForEvent(
                 router.query.id as string
             );
-            console.log(allTickets);
+            console.log(all);
+            setAllTickets(all);
         }
         doSomething();
     });
@@ -38,6 +67,11 @@ const EventPage = () => {
                 alignItems="center"
             >
                 <FullWidthCard />
+            </Box>
+            <Box>
+                {allTickets.map((ticket) => (
+                    <Text>{JSON.stringify(ticket)}</Text>
+                ))}
             </Box>
         </div>
     );
