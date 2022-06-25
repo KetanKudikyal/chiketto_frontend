@@ -24,4 +24,6 @@ export type Ticket = {
     description: string;
     artifactUri: string;
     price: number;
+    total: number;
+    sold: number;
 };

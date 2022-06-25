@@ -63,7 +63,7 @@ export default function FullWidthCard({ ticket }: { ticket: Ticket }) {
                     <Image src={ticket.artifactUri} alt="NFTIM" layout="fill" />
                 </Box>
                 <Box p={6}>
-                    <Stack spacing={0} align={"center"} mb={5}>
+                    <Stack spacing={0} align={"left"} mb={6}>
                         <Heading
                             fontSize={"2xl"}
                             fontWeight={500}
@@ -73,18 +73,35 @@ export default function FullWidthCard({ ticket }: { ticket: Ticket }) {
                         </Heading>
                         <Text color={"gray.500"}>{ticket.description}</Text>
                     </Stack>
-                    <Stack direction={"row"} justify={"center"} spacing={6}>
-                        {/* <Stack spacing={0} align={"center"}>
-                            <Text fontWeight={600}>23k</Text>
-                            <Text fontSize={"sm"} color={"gray.500"}>
-                                TicketsLeft
-                            </Text>
-                        </Stack> */}
-                        <Stack spacing={0} align={"center"}>
-                            <Text fontWeight={600}>Price</Text>
-                            <Text fontSize={"sm"} color={"gray.500"}>
-                                {ticket.price / 10 ** 6} ꜩ
-                            </Text>
+                    <Stack
+                        direction={"row"}
+                        justify={"space-around"}
+                        spacing={6}
+                    >
+                        <Stack
+                            spacing={0}
+                            direction={"row"}
+                            justify={"space-between"}
+                            display={"flex"}
+                        >
+                            <Box display={"flex"} alignItems={"center"}>
+                                <Text fontWeight={600} mr={2}>
+                                    Price:
+                                </Text>
+                                <Text fontSize={"sm"} color={"gray.500"}>
+                                    {ticket.price / 10 ** 6} ꜩ
+                                </Text>
+                            </Box>
+                        </Stack>
+                        <Stack>
+                            <Box display={"flex"} alignItems={"center"}>
+                                <Text fontWeight={600} mr={2}>
+                                    <strong>Sold:</strong>
+                                </Text>
+                                <Text fontSize={"sm"} color={"gray.500"}>
+                                    {ticket.sold}/{ticket.total}
+                                </Text>
+                            </Box>
                         </Stack>
                     </Stack>
                     <Button

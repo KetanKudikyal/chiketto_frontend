@@ -75,6 +75,7 @@ export const fetchAllTicketsForEvent = async (eventAddress: string) => {
         `https://api.ithacanet.tzkt.io/v1/contracts/${eventAddress}/storage`
     );
     let priceMap = eventStorage.data.tickets;
+    let priceBalanceMap = eventStorage.data.ticketBalance;
     const fa2Storage = await axios.get(
         `https://api.ithacanet.tzkt.io/v1/contracts/${eventStorage.data.fa2}/storage`
     );
@@ -105,6 +106,8 @@ export const fetchAllTicketsForEvent = async (eventAddress: string) => {
                     "https://gateway.pinata.cloud/ipfs/"
                 ),
                 price: parseInt(priceMap[ticket.value.token_id]),
+                total: parseInt(priceBalanceMap[ticket.value.token_id].total),
+                sold: parseInt(priceBalanceMap[ticket.value.token_id].sold),
             });
         })
     );
