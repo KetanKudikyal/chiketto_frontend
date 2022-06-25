@@ -10,6 +10,11 @@ import {
     useToast,
     VStack,
     Select,
+    Tabs,
+    TabList,
+    Tab,
+    TabPanels,
+    TabPanel,
 } from "@chakra-ui/react";
 import { char2Bytes } from "@taquito/utils";
 import React, { useEffect, useState } from "react";
@@ -301,174 +306,218 @@ const Create = () => {
         <div>
             <Navbar />
             {/* Event Form */}
-            <form onSubmit={handleCreateForm}>
-                <Box
-                    maxW={"3xl"}
-                    marginX={"auto"}
-                    p={6}
-                    rounded={"sm"}
-                    boxShadow={"sm"}
-                    border={"gray.400"}
-                    borderWidth={2}
-                >
-                    <Heading>Create Event</Heading>
-                    <Stack>
-                        <Text>Name: </Text>
-                        <Input
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            placeholder="Here is a sample placeholder"
-                            mt={"0"}
-                            size="sm"
-                            isRequired={true}
-                        />
-                    </Stack>
-                    <Stack>
-                        <Text>Description: </Text>
-                        <Textarea
-                            value={desc}
-                            onChange={(e) => setDesc(e.target.value)}
-                            placeholder="Here is a sample placeholder"
-                            mt={"0"}
-                            size="sm"
-                            isRequired={true}
-                        ></Textarea>
-                    </Stack>
-                    <Stack>
-                        <Text>Image: </Text>
-                        <Input
-                            onChange={(e) =>
-                                setImg(
-                                    e.target.files ? e.target.files[0] : null
-                                )
-                            }
-                            accept={"image/png, image/jpg, image/jpeg"}
-                            type={"file"}
-                            placeholder="Here is a sample placeholder"
-                            mt={"0"}
-                            size="sm"
-                            isRequired={true}
-                        />
-                    </Stack>
-                    <Stack alignItems={"start"}>
-                        <Button
-                            type="submit"
-                            colorScheme="blue"
-                            isLoading={isBtnLoading}
-                        >
-                            Create Event
-                        </Button>
-                    </Stack>
-                </Box>
-            </form>
-
-            {/* Ticket form */}
-            <form
-                onSubmit={handleCreateTicketForm}
-                style={{ marginTop: "2rem" }}
+            <Box
+                maxW={"3xl"}
+                marginX={"auto"}
+                p={6}
+                rounded={"sm"}
+                boxShadow={"sm"}
             >
-                <Box
-                    maxW={"3xl"}
-                    marginX={"auto"}
-                    p={6}
-                    rounded={"sm"}
-                    boxShadow={"sm"}
-                    border={"gray.400"}
-                    borderWidth={2}
-                >
-                    <Heading>Create Ticket</Heading>
-                    <Stack>
-                        <Text>Event: </Text>
-                        <Select
-                            placeholder="Select Event"
-                            value={ticketEvent}
-                            onChange={(e) => setTicketEvent(e.target.value)}
-                        >
-                            {myEvents.map((event, index) => (
-                                // make the first one default
-                                <option key={index} value={event.address}>
-                                    {event.name}
-                                </option>
-                            ))}
-                        </Select>
-                    </Stack>
-                    <Stack>
-                        <Text>Name: </Text>
-                        <Input
-                            value={ticketName}
-                            onChange={(e) => setTicketName(e.target.value)}
-                            placeholder="Here is a sample placeholder"
-                            mt={"0"}
-                            size="sm"
-                            isRequired={true}
-                        />
-                    </Stack>
-                    <Stack>
-                        <Text>Description: </Text>
-                        <Textarea
-                            value={ticketDesc}
-                            onChange={(e) => setTicketDesc(e.target.value)}
-                            placeholder="Here is a sample placeholder"
-                            mt={"0"}
-                            size="sm"
-                            isRequired={true}
-                        ></Textarea>
-                    </Stack>
-                    <Stack>
-                        <Text>Quantity: </Text>
-                        <Input
-                            value={ticketQuantity}
-                            onChange={(e) =>
-                                setTicketQuantity(parseInt(e.target.value))
-                            }
-                            placeholder="Amount of tickets to mint."
-                            type={"number"}
-                            mt={"0"}
-                            size="sm"
-                            isRequired={true}
-                        />
-                    </Stack>
-                    <Stack>
-                        <Text>Price (in XTZ): </Text>
-                        <Input
-                            value={ticketPrice}
-                            onChange={(e) =>
-                                setTicketPrice(parseFloat(e.target.value))
-                            }
-                            placeholder="Price of 1 ticket (in XTZ)"
-                            type={"number"}
-                            mt={"0"}
-                            size="sm"
-                            isRequired={true}
-                        />
-                    </Stack>
-                    <Stack>
-                        <Text>Image: </Text>
-                        <Input
-                            onChange={(e) =>
-                                setTicketImg(
-                                    e.target.files ? e.target.files[0] : null
-                                )
-                            }
-                            accept={"image/png, image/jpg, image/jpeg"}
-                            type={"file"}
-                            placeholder="Image for the ticket."
-                            mt={"0"}
-                            size="sm"
-                            isRequired={true}
-                        />
-                    </Stack>
-                    <Stack alignItems={"start"}>
-                        <Button
-                            type="submit"
-                            colorScheme="blue"
-                            isLoading={isEventBtnLoading}
-                        >
-                            Create Ticket
-                        </Button>
-                    </Stack>
-                </Box>
-            </form>
+                <Tabs>
+                    <TabList>
+                        <Tab>Create Event</Tab>
+                        <Tab>Create Ticket</Tab>
+                    </TabList>
+                    <TabPanels>
+                        <TabPanel>
+                            <form onSubmit={handleCreateForm}>
+                                <Box
+                                    maxW={"3xl"}
+                                    marginX={"auto"}
+                                    p={6}
+                                    rounded={"sm"}
+                                    boxShadow={"sm"}
+                                    border={"gray.400"}
+                                    borderWidth={2}
+                                >
+                                    <Heading>Create Event</Heading>
+                                    <Stack>
+                                        <Text>Name: </Text>
+                                        <Input
+                                            value={name}
+                                            onChange={(e) =>
+                                                setName(e.target.value)
+                                            }
+                                            placeholder="Here is a sample placeholder"
+                                            mt={"0"}
+                                            size="sm"
+                                            isRequired={true}
+                                        />
+                                    </Stack>
+                                    <Stack>
+                                        <Text>Description: </Text>
+                                        <Textarea
+                                            value={desc}
+                                            onChange={(e) =>
+                                                setDesc(e.target.value)
+                                            }
+                                            placeholder="Here is a sample placeholder"
+                                            mt={"0"}
+                                            size="sm"
+                                            isRequired={true}
+                                        ></Textarea>
+                                    </Stack>
+                                    <Stack>
+                                        <Text>Image: </Text>
+                                        <Input
+                                            onChange={(e) =>
+                                                setImg(
+                                                    e.target.files
+                                                        ? e.target.files[0]
+                                                        : null
+                                                )
+                                            }
+                                            accept={
+                                                "image/png, image/jpg, image/jpeg"
+                                            }
+                                            type={"file"}
+                                            placeholder="Here is a sample placeholder"
+                                            mt={"0"}
+                                            size="sm"
+                                            isRequired={true}
+                                        />
+                                    </Stack>
+                                    <Stack alignItems={"start"}>
+                                        <Button
+                                            type="submit"
+                                            colorScheme="blue"
+                                            isLoading={isBtnLoading}
+                                        >
+                                            Create Event
+                                        </Button>
+                                    </Stack>
+                                </Box>
+                            </form>
+                        </TabPanel>
+                        <TabPanel>
+                            {/* Ticket form */}
+                            <form
+                                onSubmit={handleCreateTicketForm}
+                                style={{ marginTop: "2rem" }}
+                            >
+                                <Box
+                                    maxW={"3xl"}
+                                    marginX={"auto"}
+                                    p={6}
+                                    rounded={"sm"}
+                                    boxShadow={"sm"}
+                                    border={"gray.400"}
+                                    borderWidth={2}
+                                >
+                                    <Heading>Create Ticket</Heading>
+                                    <Stack>
+                                        <Text>Event: </Text>
+                                        <Select
+                                            placeholder="Select Event"
+                                            value={ticketEvent}
+                                            onChange={(e) =>
+                                                setTicketEvent(e.target.value)
+                                            }
+                                        >
+                                            {myEvents.map((event, index) => (
+                                                // make the first one default
+                                                <option
+                                                    key={index}
+                                                    value={event.address}
+                                                >
+                                                    {event.name}
+                                                </option>
+                                            ))}
+                                        </Select>
+                                    </Stack>
+                                    <Stack>
+                                        <Text>Name: </Text>
+                                        <Input
+                                            value={ticketName}
+                                            onChange={(e) =>
+                                                setTicketName(e.target.value)
+                                            }
+                                            placeholder="Here is a sample placeholder"
+                                            mt={"0"}
+                                            size="sm"
+                                            isRequired={true}
+                                        />
+                                    </Stack>
+                                    <Stack>
+                                        <Text>Description: </Text>
+                                        <Textarea
+                                            value={ticketDesc}
+                                            onChange={(e) =>
+                                                setTicketDesc(e.target.value)
+                                            }
+                                            placeholder="Here is a sample placeholder"
+                                            mt={"0"}
+                                            size="sm"
+                                            isRequired={true}
+                                        ></Textarea>
+                                    </Stack>
+                                    <Stack>
+                                        <Text>Quantity: </Text>
+                                        <Input
+                                            value={ticketQuantity}
+                                            onChange={(e) =>
+                                                setTicketQuantity(
+                                                    parseInt(e.target.value)
+                                                )
+                                            }
+                                            placeholder="Amount of tickets to mint."
+                                            type={"number"}
+                                            mt={"0"}
+                                            size="sm"
+                                            isRequired={true}
+                                        />
+                                    </Stack>
+                                    <Stack>
+                                        <Text>Price (in XTZ): </Text>
+                                        <Input
+                                            value={ticketPrice}
+                                            onChange={(e) =>
+                                                setTicketPrice(
+                                                    parseFloat(e.target.value)
+                                                )
+                                            }
+                                            placeholder="Price of 1 ticket (in XTZ)"
+                                            type={"number"}
+                                            mt={"0"}
+                                            size="sm"
+                                            isRequired={true}
+                                        />
+                                    </Stack>
+                                    <Stack>
+                                        <Text>Image: </Text>
+                                        <Input
+                                            onChange={(e) =>
+                                                setTicketImg(
+                                                    e.target.files
+                                                        ? e.target.files[0]
+                                                        : null
+                                                )
+                                            }
+                                            accept={
+                                                "image/png, image/jpg, image/jpeg"
+                                            }
+                                            type={"file"}
+                                            placeholder="Image for the ticket."
+                                            mt={"0"}
+                                            size="sm"
+                                            isRequired={true}
+                                        />
+                                    </Stack>
+                                    <Stack alignItems={"start"}>
+                                        <Button
+                                            type="submit"
+                                            colorScheme="blue"
+                                            isLoading={isEventBtnLoading}
+                                        >
+                                            Create Ticket
+                                        </Button>
+                                    </Stack>
+                                </Box>
+                            </form>
+                        </TabPanel>
+                    </TabPanels>
+                </Tabs>
+            </Box>
         </div>
     );
 };
